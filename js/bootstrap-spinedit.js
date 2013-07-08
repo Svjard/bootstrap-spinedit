@@ -59,7 +59,7 @@ $(function () {
             this.setMaximum(options.maximum);
         }
         else if (this.element.attr('max') && !isNaN(parseFloat(this.element.attr('max')))) {
-           this.setMinimum(parseInt(this.element.attr('max'))); 
+           this.setMaximum(parseInt(this.element.attr('max'))); 
         }
 
         this.numberOfDecimals = $.fn.spinedit.defaults.numberOfDecimals;
@@ -89,7 +89,7 @@ $(function () {
             this.setStep(options.step);
         }
         else if (this.element.attr('step') && !isNaN(parseFloat(this.element.attr('step')))) {
-           this.setMinimum(parseInt(this.element.attr('step'))); 
+           this.setStep(parseInt(this.element.attr('step'))); 
         }
 
         var template = $(DRPGlobal.template);
