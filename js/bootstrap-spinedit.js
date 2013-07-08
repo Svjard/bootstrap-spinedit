@@ -50,10 +50,16 @@ $(function () {
         if (hasOptions && typeof options.minimum == 'number') {
             this.setMinimum(options.minimum);
         }
+        else if (this.element.attr('min') && !isNaN(parseFloat(this.element.attr('min')))) {
+           this.setMinimum(parseInt(this.element.attr('min'))); 
+        }
 
         this.maximum = $.fn.spinedit.defaults.maximum;
         if (hasOptions && typeof options.maximum == 'number') {
             this.setMaximum(options.maximum);
+        }
+        else if (this.element.attr('max') && !isNaN(parseFloat(this.element.attr('max')))) {
+           this.setMinimum(parseInt(this.element.attr('max'))); 
         }
 
         this.numberOfDecimals = $.fn.spinedit.defaults.numberOfDecimals;
@@ -81,6 +87,9 @@ $(function () {
         this.step = $.fn.spinedit.defaults.step;
         if (hasOptions && typeof options.step == 'number') {
             this.setStep(options.step);
+        }
+        else if (this.element.attr('step') && !isNaN(parseFloat(this.element.attr('step')))) {
+           this.setMinimum(parseInt(this.element.attr('step'))); 
         }
 
         var template = $(DRPGlobal.template);
