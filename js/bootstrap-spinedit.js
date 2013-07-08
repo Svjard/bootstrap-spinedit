@@ -182,7 +182,8 @@ $(function () {
         minimum: 0,
         maximum: 100,
         step: 1,
-        numberOfDecimals: 0
+        numberOfDecimals: 0,
+        list: undefined
     };
 
     $.fn.spinedit.Constructor = SpinEdit;
