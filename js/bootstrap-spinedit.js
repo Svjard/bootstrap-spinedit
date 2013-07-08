@@ -84,6 +84,11 @@ $(function () {
         template.find('.icon-chevron-up').mousehold($.proxy(this.increase, this));
         template.find('.icon-chevron-down').mousehold($.proxy(this.decrease, this));
         this.element.on('keypress', $.proxy(this._keypress, this));
+        var toFix = ['wheel', 'mousewheel', 'DOMMouseScroll', 'MozMousePixelScroll'];
+        var toBind = 'onwheel' in document || document.documentMode >= 9 ? ['wheel'] : ['mousewheel', 'DomMouseScroll', 'MozMousePixelScroll'];
+        for ( var i = toBind.length - 1; i >= 0; i--; ) {
+            this.element.on(toBind[i], $.proxy(this._mousewheel, this));
+        }
         this.element.on('blur', $.proxy(this._checkConstraints, this));
     };
 
@@ -112,6 +117,8 @@ $(function () {
                 value = this.minimum;
             if (this.value == value)
                 return;
+            if (this.list && this.list.indexOf(value) === -1)
+                value = this.value;
             if (value < this.minimum)
                 value = this.minimum;
             if (value > this.maximum)
@@ -152,6 +159,10 @@ $(function () {
             var k = event.keyCode;
             if (!(a.indexOf(k) >= 0))
                 event.preventDefault();
+        },
+
+        _mousewheel : function(event) {
+            
         },
 
         _checkConstraints: function (e) {
