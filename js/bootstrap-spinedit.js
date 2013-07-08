@@ -59,7 +59,7 @@ $(function () {
         this.numberOfDecimals = $.fn.spinedit.defaults.numberOfDecimals;
         if (hasOptions && typeof options.numberOfDecimals == 'number') {
             this.setNumberOfDecimals(options.numberOfDecimals);
-        }        
+        }      
 		
 		var value = $.fn.spinedit.defaults.value;
         if (hasOptions && typeof options.value == 'number') {
@@ -71,6 +71,12 @@ $(function () {
 			}
 		}		
         this.setValue(value);		
+
+        this.list = $.fn.spinedit.defaults.list;
+        if (hasOptions && $.isArray(options.list)) {
+            this.setList(options.list);
+            this.listIndex = this.list.indexOf(this.value);
+        }
 
         this.step = $.fn.spinedit.defaults.step;
         if (hasOptions && typeof options.step == 'number') {
@@ -85,8 +91,8 @@ $(function () {
         template.find('.icon-chevron-down').mousehold($.proxy(this.decrease, this));
         this.element.on('keypress', $.proxy(this._keypress, this));
         var toFix = ['wheel', 'mousewheel', 'DOMMouseScroll', 'MozMousePixelScroll'];
-        var toBind = 'onwheel' in document || document.documentMode >= 9 ? ['wheel'] : ['mousewheel', 'DomMouseScroll', 'MozMousePixelScroll'];
-        for ( var i = toBind.length - 1; i >= 0; i--; ) {
+        var toBind = ('onwheel' in document || document.documentMode >= 9) ? ['wheel'] : ['mousewheel', 'DomMouseScroll', 'MozMousePixelScroll'];
+        for ( var i = toBind.length - 1; i >= 0; i-- ) {
             this.element.on(toBind[i], $.proxy(this._mousewheel, this));
         }
         this.element.on('blur', $.proxy(this._checkConstraints, this));
@@ -111,6 +117,13 @@ $(function () {
             this.numberOfDecimals = parseInt(value);
         },
 
+        setList: function(list) {
+            this.list = [];
+            for (var i = 0; i < list.length; i++) {
+                this.list[i] = list[i];
+            }
+        },
+
         setValue: function (value) {
             value = parseFloat(value);
             if (isNaN(value))
@@ -119,10 +132,12 @@ $(function () {
                 return;
             if (this.list && this.list.indexOf(value) === -1)
                 value = this.value;
-            if (value < this.minimum)
-                value = this.minimum;
-            if (value > this.maximum)
-                value = this.maximum;
+            else {
+                if (value < this.minimum)
+                    value = this.minimum;
+                if (value > this.maximum)
+                    value = this.maximum;
+            }
             this.value = value;
             this.element.val(this.value.toFixed(this.numberOfDecimals));
             this.element.change();
@@ -134,12 +149,20 @@ $(function () {
         },
 
         increase: function () {
-            var newValue = this.value + this.step;
+            var newValue;
+            if (this.list)
+                newValue = this.list[++this.listIndex];
+            else 
+                newValue = this.value + this.step;
             this.setValue(newValue);
         },
 
         decrease: function () {
-            var newValue = this.value - this.step;
+            var newValue;
+            if (this.list)
+                newValue = this.list[--this.listIndex];
+            else 
+                newValue = this.value - this.step;
             this.setValue(newValue);
         },
 
@@ -161,8 +184,55 @@ $(function () {
                 event.preventDefault();
         },
 
-        _mousewheel : function(event) {
-            
+        _mousewheel : function() {
+            var orgEvent = event || window.event,
+                args = [].slice.call(arguments, 1),
+                delta = 0,
+                deltaX = 0,
+                deltaY = 0,
+                absDelta = 0,
+                absDeltaXY = 0,
+                fn;
+            event = $.event.fix(orgEvent);
+            event.type = "mousewheel";
+
+            // Old school scrollwheel delta
+            if ( orgEvent.wheelDelta ) { delta = orgEvent.wheelDelta; }
+            if ( orgEvent.detail )     { delta = orgEvent.detail * -1; }
+
+            // New school wheel delta (wheel event)
+            if ( orgEvent.deltaY ) {
+                deltaY = orgEvent.deltaY * -1;
+                delta  = deltaY;
+            }
+            if ( orgEvent.deltaX ) {
+                deltaX = orgEvent.deltaX;
+                delta  = deltaX * -1;
+            }
+
+            // Webkit
+            if ( orgEvent.wheelDeltaY !== undefined ) { deltaY = orgEvent.wheelDeltaY; }
+            if ( orgEvent.wheelDeltaX !== undefined ) { deltaX = orgEvent.wheelDeltaX * -1; }
+
+            // Look for lowest delta to normalize the delta values
+            absDelta = Math.abs(delta);
+            if ( !this.lowestDelta || absDelta < this.lowestDelta ) { this.lowestDelta = absDelta; }
+            absDeltaXY = Math.max(Math.abs(deltaY), Math.abs(deltaX));
+            if ( !this.lowestDeltaXY || absDeltaXY < this.lowestDeltaXY ) { this.lowestDeltaXY = absDeltaXY; }
+
+            // Get a whole value for the deltas
+            fn = delta > 0 ? 'floor' : 'ceil';
+            delta  = Math[fn](delta / this.lowestDelta);
+            deltaX = Math[fn](deltaX / this.lowestDeltaXY);
+            deltaY = Math[fn](deltaY / this.lowestDeltaXY);
+
+            // Add event and delta to the front of the arguments
+            args.unshift(event, delta, deltaX, deltaY);
+
+            if (delta > 0)
+                this.increase();
+            else
+                this.decrease();
         },
 
         _checkConstraints: function (e) {
