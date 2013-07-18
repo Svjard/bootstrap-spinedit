@@ -79,7 +79,7 @@ $(function () {
 				if (!isNaN(initialValue)) value = initialValue.toFixed(this.numberOfDecimals);				
 			}
 		}		
-        this.setValue(value);		
+        this.setValue(value, false);		
 
         this.list = $.fn.spinedit.defaults.list;
         if (hasOptions && $.isArray(options.list)) {
@@ -136,7 +136,7 @@ $(function () {
             }
         },
 
-        setValue: function (value) {
+        setValue: function (value, triggerChange) {
             value = parseFloat(value);
             if (isNaN(value))
                 value = this.minimum;
@@ -152,12 +152,9 @@ $(function () {
             }
             this.value = value;
             this.element.val(this.value.toFixed(this.numberOfDecimals));
-            this.element.change();
-
-            this.element.trigger({
-                type: "valueChanged",
-                value: parseFloat(this.value.toFixed(this.numberOfDecimals))
-            });
+            if (triggerChange) {
+                this.element.change();
+            }
         },
 
         increase: function () {
@@ -166,7 +163,7 @@ $(function () {
                 newValue = this.list[++this.listIndex];
             else 
                 newValue = this.value + this.step;
-            this.setValue(newValue);
+            this.setValue(newValue, true);
         },
 
         decrease: function () {
@@ -175,7 +172,7 @@ $(function () {
                 newValue = this.list[--this.listIndex];
             else 
                 newValue = this.value - this.step;
-            this.setValue(newValue);
+            this.setValue(newValue, true);
         },
 
         _keypress: function (event) {
@@ -249,7 +246,7 @@ $(function () {
 
         _checkConstraints: function (e) {
             var target = $(e.target);
-            this.setValue(target.val());
+            this.setValue(target.val(), true);
         }
     };
 
