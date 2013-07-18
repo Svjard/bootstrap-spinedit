@@ -50,7 +50,7 @@ $(function () {
         if (hasOptions && typeof options.minimum == 'number') {
             this.setMinimum(options.minimum);
         }
-        else if (this.element.attr('min') && !isNaN(parseFloat(this.element.attr('min'))) {
+        else if (this.element.attr('min') && !isNaN(parseFloat(this.element.attr('min')))) {
             this.setMinimum(parseFloat(this.element.attr('min')));
         }
 
