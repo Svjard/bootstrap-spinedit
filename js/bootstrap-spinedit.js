@@ -89,7 +89,7 @@ $(function () {
             this.setStep(options.step);
         }
         else if (this.element.attr('step') && !isNaN(parseFloat(this.element.attr('step')))) {
-           this.setStep(parseInt(this.element.attr('step'))); 
+           this.setStep(parseFloat(this.element.attr('step'))); 
         }
 
         var template = $(DRPGlobal.template);
