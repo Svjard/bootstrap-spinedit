@@ -50,8 +50,8 @@ $(function () {
         if (hasOptions && typeof options.minimum == 'number') {
             this.setMinimum(options.minimum);
         }
-        else if (this.element.attr('min') && !isNaN(parseFloat(this.element.attr('min')))) {
-           this.setMinimum(parseInt(this.element.attr('min'))); 
+        else if (this.element.attr('min') && !isNaN(parseFloat(this.element.attr('min'))) {
+            this.setMinimum(parseFloat(this.element.attr('min')));
         }
 
         this.maximum = $.fn.spinedit.defaults.maximum;
@@ -59,13 +59,16 @@ $(function () {
             this.setMaximum(options.maximum);
         }
         else if (this.element.attr('max') && !isNaN(parseFloat(this.element.attr('max')))) {
-           this.setMaximum(parseInt(this.element.attr('max'))); 
+           this.setMaximum(parseFloat(this.element.attr('max'))); 
         }
 
         this.numberOfDecimals = $.fn.spinedit.defaults.numberOfDecimals;
         if (hasOptions && typeof options.numberOfDecimals == 'number') {
             this.setNumberOfDecimals(options.numberOfDecimals);
-        }      
+        }
+        else if (this.element.attr('precision') && !isNaN(parseInt(this.element.attr('precision')))) {
+           this.setNumberOfDecimals(parseInt(this.element.attr('precision'))); 
+        }
 		
 		var value = $.fn.spinedit.defaults.value;
         if (hasOptions && typeof options.value == 'number') {
