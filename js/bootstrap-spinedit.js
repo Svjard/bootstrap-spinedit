@@ -86,6 +86,14 @@ $(function () {
             this.setList(options.list);
             this.listIndex = this.list.indexOf(this.value);
         }
+        else if (this.element.attr('list')) {
+           var arr = this.element.attr('list').split(',');
+           for (var i = arr.length - 1; i >= 0; i--) {
+            arr[i] = parseInt(arr[i]);
+           }
+           this.setList(arr);
+           this.listIndex = this.list.indexOf(this.value);
+        }
 
         this.step = $.fn.spinedit.defaults.step;
         if (hasOptions && typeof options.step == 'number') {
