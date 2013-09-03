@@ -95,6 +95,14 @@ $(function () {
            this.listIndex = this.list.indexOf(this.value);
         }
 
+        this.variable = $.fn.spinedit.defaults.variable;
+        if (hasOptions && typeof options.variable == 'boolean') {
+            this.setVariable(options.variable);
+        }
+        else if (this.element.attr('variable')) {
+            this.setVariable(Boolean(this.element.attr('variable')));
+        }
+
         this.step = $.fn.spinedit.defaults.step;
         if (hasOptions && typeof options.step == 'number') {
             this.setStep(options.step);
@@ -137,6 +145,10 @@ $(function () {
             this.numberOfDecimals = parseInt(value);
         },
 
+        setVariable: function(value) {
+            this.variable = value;
+        }
+
         setList: function(list) {
             this.list = [];
             for (var i = 0; i < list.length; i++) {
@@ -159,9 +171,15 @@ $(function () {
                     value = this.maximum;
             }
             this.value = value;
-            this.element.val(this.value.toFixed(this.numberOfDecimals));
-            if (triggerChange) {
-                this.element.change();
+            
+            if (this.variable) {
+                this.element.val('*');
+            }
+            else {
+                this.element.val(this.value.toFixed(this.numberOfDecimals));
+                if (triggerChange) {
+                    this.element.change();
+                }
             }
         },
 
@@ -281,7 +299,8 @@ $(function () {
         maximum: 100,
         step: 1,
         numberOfDecimals: 0,
-        list: undefined
+        list: undefined,
+        variable: false
     };
 
     $.fn.spinedit.Constructor = SpinEdit;
