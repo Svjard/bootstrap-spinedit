@@ -69,6 +69,14 @@ $(function () {
         else if (this.element.attr('precision') && !isNaN(parseInt(this.element.attr('precision')))) {
            this.setNumberOfDecimals(parseInt(this.element.attr('precision'))); 
         }
+
+        this.variable = $.fn.spinedit.defaults.variable;
+        if (hasOptions && typeof options.variable == 'boolean') {
+            this.setVariable(options.variable);
+        }
+        else if (this.element.attr('variable')) {
+            this.setVariable(Boolean(this.element.attr('variable')));
+        }
 		
 		var value = $.fn.spinedit.defaults.value;
         if (hasOptions && typeof options.value == 'number') {
@@ -93,14 +101,6 @@ $(function () {
            }
            this.setList(arr);
            this.listIndex = this.list.indexOf(this.value);
-        }
-
-        this.variable = $.fn.spinedit.defaults.variable;
-        if (hasOptions && typeof options.variable == 'boolean') {
-            this.setVariable(options.variable);
-        }
-        else if (this.element.attr('variable')) {
-            this.setVariable(Boolean(this.element.attr('variable')));
         }
 
         this.step = $.fn.spinedit.defaults.step;
@@ -147,7 +147,7 @@ $(function () {
 
         setVariable: function(value) {
             this.variable = value;
-        }
+        },
 
         setList: function(list) {
             this.list = [];
@@ -202,6 +202,10 @@ $(function () {
         },
 
         _keypress: function (event) {
+            if (this.variable) {
+                return;
+            }
+
             // Allow: -
             if (event.keyCode == 45) {
                 return;
@@ -220,6 +224,10 @@ $(function () {
         },
 
         _mousewheel : function() {
+            if (this.variable) {
+                return;
+            }
+
             var orgEvent = event || window.event,
                 args = [].slice.call(arguments, 1),
                 delta = 0,
