@@ -317,8 +317,8 @@ $(function () {
 
     DRPGlobal.template =
 	'<div class="spinedit">' +
-	'<i class="icon-chevron-up"></i>' +
-	'<i class="icon-chevron-down"></i>' +
+	'<i class="fa fa-chevron-up"></i>' +
+	'<i class="fa fa-chevron-down"></i>' +
 	'</div>';
 
 }(window.jQuery);
