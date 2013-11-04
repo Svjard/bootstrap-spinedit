@@ -115,8 +115,8 @@ $(function () {
         this.element.after(template);
         template.disableTextSelect();
 
-        template.find('.icon-chevron-up').mousehold($.proxy(this.increase, this));
-        template.find('.icon-chevron-down').mousehold($.proxy(this.decrease, this));
+        template.find('.fa-chevron-up').mousehold($.proxy(this.increase, this));
+        template.find('.fa-chevron-down').mousehold($.proxy(this.decrease, this));
         this.element.on('keypress', $.proxy(this._keypress, this));
         var toFix = ['wheel', 'mousewheel', 'DOMMouseScroll', 'MozMousePixelScroll'];
         var toBind = ('onwheel' in document || document.documentMode >= 9) ? ['wheel'] : ['mousewheel', 'DomMouseScroll', 'MozMousePixelScroll'];
