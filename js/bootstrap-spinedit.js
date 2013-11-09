@@ -113,7 +113,7 @@ $(function () {
         }
 
         var template = $(DRPGlobal.template);
-        this.element.after(template);
+        this.element.parent().after(template);
         template.disableTextSelect();
 
         template.find('.fa-chevron-up').mousehold($.proxy(this.increase, this));
