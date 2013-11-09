@@ -317,13 +317,11 @@ $(function () {
     var DRPGlobal = {};
 
     DRPGlobal.template =
-    '<div class="row">' +
     '<div class="col-xs-2" style="padding-left: 5px;">' 
 	'<div class="spinedit">' +
 	'<i class="fa fa-chevron-up"></i>' +
 	'<i class="fa fa-chevron-down"></i>' +
 	'</div>' +
-    '</div>' +
     '</div>';
 
 }(window.jQuery);
