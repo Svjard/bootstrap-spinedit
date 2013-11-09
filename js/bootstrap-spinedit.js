@@ -40,7 +40,7 @@ $(function () {
 
     var SpinEdit = function (element, options) {
         this.element = $(element);
-        this.element.wrap('<div class="row"><div class="col-xs-9" style="padding-right: 0;padding-left: 15px;"></div></div>');
+        this.element.wrap('<div class="row"><div class="col-xs-9" style="padding-right: 0;padding-left: 0;"></div></div>');
         this.element.addClass("spinedit");
         this.element.addClass("noSelect");
         this.intervalId = undefined;
