@@ -40,6 +40,7 @@ $(function () {
 
     var SpinEdit = function (element, options) {
         this.element = $(element);
+        this.element.wrap('<div class="row"><div class="col-xs-9" style="padding-right: 0;padding-left: 15px;"></div></div>');
         this.element.addClass("spinedit");
         this.element.addClass("noSelect");
         this.intervalId = undefined;
@@ -316,9 +317,13 @@ $(function () {
     var DRPGlobal = {};
 
     DRPGlobal.template =
+    '<div class="row">' +
+    '<div class="col-xs-2" style="padding-left: 5px;">' 
 	'<div class="spinedit">' +
 	'<i class="fa fa-chevron-up"></i>' +
 	'<i class="fa fa-chevron-down"></i>' +
-	'</div>';
+	'</div>' +
+    '</div>' +
+    '</div>';
 
 }(window.jQuery);
