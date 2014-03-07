@@ -71,6 +71,14 @@ $(function () {
            this.setNumberOfDecimals(parseInt(this.element.attr('precision'))); 
         }
 
+        this.freeForm = $.fn.spinedit.defaults.freeForm;
+        if (hasOptions && typeof options.freeForm == 'boolean') {
+            this.setFreeForm(options.freeForm);
+        }
+        else if (this.element.attr('freeform') && (this.element.attr('freeform').toLowerCase() === 'true' || this.element.attr('freeform').toLowerCase() === 'false')) {
+           this.setFreeForm(this.element.attr('precision') == 'true' ? true : false); 
+        }
+
         this.variable = $.fn.spinedit.defaults.variable;
         if (hasOptions && typeof options.variable == 'boolean') {
             this.setVariable(options.variable);
@@ -146,6 +154,10 @@ $(function () {
             this.numberOfDecimals = parseInt(value);
         },
 
+        setFreeForm: function (value) {
+            this.freeForm = value;
+        },
+
         setVariable: function(value) {
             this.variable = value;
         },
@@ -158,12 +170,14 @@ $(function () {
         },
 
         setValue: function (value, triggerChange) {
+            if (this.element.attr('disabled')) return;
+
             value = parseFloat(value);
             if (isNaN(value))
                 value = this.minimum;
             if (this.value == value)
                 return;
-            if (this.list && this.list.indexOf(value) === -1)
+            if (this.list && this.list.indexOf(value) === -1 && !this.freeForm)
                 value = this.value;
             else {
                 if (value < this.minimum)
@@ -185,6 +199,8 @@ $(function () {
         },
 
         increase: function () {
+            if (this.element.attr('disabled')) return;
+
             var newValue;
             if (this.list)
                 newValue = this.list[++this.listIndex];
@@ -194,6 +210,8 @@ $(function () {
         },
 
         decrease: function () {
+            if (this.element.attr('disabled')) return;
+
             var newValue;
             if (this.list)
                 newValue = this.list[--this.listIndex];
@@ -307,6 +325,7 @@ $(function () {
         minimum: 0,
         maximum: 100,
         step: 1,
+        freeForm: false,
         numberOfDecimals: 0,
         list: undefined,
         variable: false
