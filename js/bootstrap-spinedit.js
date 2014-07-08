@@ -124,7 +124,7 @@ $(function () {
         this.element.parent().after(template);
         template.disableTextSelect();
 
-        template.find('.fa-chevron-up').mousehold($.proxy(this.increase, this));
+        template.find('.fa-chevron-up').css({'display': 'block', 'margin-top': '3px'}).mousehold($.proxy(this.increase, this));
         template.find('.fa-chevron-down').mousehold($.proxy(this.decrease, this));
         this.element.on('keypress', $.proxy(this._keypress, this));
         var toFix = ['wheel', 'mousewheel', 'DOMMouseScroll', 'MozMousePixelScroll'];
